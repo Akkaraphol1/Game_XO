@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+ <meta charset="UTF-8">
+    <title>Tic Tac Toe Game</title>
+    <!-- Favicon -->
+    <link rel="icon" href="https://freepngimg.com/save/55655-gaming-download-hd-png/512x512" sizes="16x16" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+::selection{
+  color: #fff;
+  background:#56baed;
+}
+body{
+  background:#56baed;
+}
+.select-box, .play-board, .result-box{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+.select-box{
+  background: #fff;
+  padding: 20px 25px 25px;
+  border-radius: 5px;
+  max-width: 400px;
+  width: 100%;
+}
+.select-box.hide{
+  opacity: 0;
+  pointer-events: none;
+}
+.select-box header{
+  font-size: 30px;
+  font-weight: 600;
+  padding-bottom: 10px;
+  border-bottom: 1px solid lightgrey;
+}
+.select-box .title{
+  font-size: 22px;
+  font-weight: 500;
+  margin: 20px 0;
+}
+.select-box .options{
+  display: flex;
+  width: 100%;
+}
+.options button{
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 10px 0;
+  border: none;
+  background: #56baed;
+  border-radius: 5px;
+  color: #fff;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.options button:hover,
+.btn button:hover{
+  transform: scale(0.96);
+}
+.options button.playerX{
+  margin-right: 5px;
+}
+.options button.playerO{
+  margin-left: 5px;
+}
+.play-board{
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.9);
+}
+.play-board.show{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+.play-board .details{
+  padding: 7px;
+  border-radius: 5px;
+  background: #fff;
+}
+.play-board .players{
+  width: 100%;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+}
+.players span{
+  position: relative;
+  z-index: 2;
+  color: #56baed;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 10px 0;
+  width: 100%;
+  text-align: center;
+  cursor: default;
+  user-select: none;
+  transition: all 0.3 ease;
+}
+.players.active span:first-child{
+  color: #fff;
+}
+.players.active span:last-child{
+  color: #56baed;
+}
+.players span:first-child{
+  color: #fff;
+}
+.players .slider{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: #56baed;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+.players.active .slider{
+  left: 50%;
+}
+.players.active span:first-child{
+  color: #56baed;
+}
+.players.active span:nth-child(2){
+  color: #fff;
+}
+.players.active .slider{
+  left: 50%;
+}
+.play-area{
+  margin-top: 20px;
+}
+.play-area section{
+  display: flex;
+  margin-bottom: 1px;
+}
+.play-area section span{
+  display: block;
+  height: 90px;
+  width: 90px;
+  margin: 2px;
+  color: #56baed;
+  font-size: 40px;
+  line-height: 80px;
+  text-align: center;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.result-box{
+  padding: 25px 20px;
+  border-radius: 5px;
+  max-width: 400px;
+  width: 100%;
+  opacity: 0;
+  text-align: center;
+  background: #fff;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.9);
+}
+.result-box.show{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+.result-box .won-text{
+  font-size: 30px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+}
+.result-box .won-text p{
+  font-weight: 600;
+  margin: 0 5px;
+}
+.result-box .btn{
+  width: 100%;
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+}
+.btn button{
+  font-size: 18px;
+  font-weight: 500;
+  padding: 8px 20px;
+  border: none;
+  background: #56baed;
+  border-radius: 5px;
+  color: #fff;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+@media (max-width:768px)
+{
+.body{
+  background:#009688;
+     } 
+}
+
+
+
+
+/*page1*/
+.page1_class1-off{
+    display: none;
+  }
+
+
+/*page2*/
+.page2_class1{
+    display: none;
+  }
+
+.page2_id1-off{
+    display:none;
+}
+
+/*page3*/
+.page3_class1{
+    display:none;
+
+}
+.page3_id1-off{
+    display:none;
+}
+
+/*page4*/
+.page4_class1{
+    display:none;
+
+}
+.page4_id1-off{
+    display:none;
+}
+
+input[type=text]:hover{
+        border-bottom:2px solid black;
+      }
+input[type=number]:hover{
+        border-bottom:2px solid black;
+      }
+input[type=password]:hover{
+        border-bottom:2px solid black;
+      }
+
+.user{
+display: inline-block;
+width: 75px;
+height: 75px;
+border: 8px solid black;
+border-radius: 50%;
+position: relative;
+overflow: hidden;
+box-sizing: border-box;
+}
+
+/*the head/*/
+.user::before{
+content: '';
+display: inline-block;
+width: 24px;
+height: 24px;
+background: black;
+border-radius: 50%;
+position: absolute;
+left: calc(50% - 11px);
+top: 10px;
+}
+
+/*the body*/
+.user::after{
+content: '';
+display: inline-block;
+width:50px;
+height:40px;
+background: black;
+border-radius: 50%;
+position: absolute;
+left: calc(50% - 24px);
+top: 39px;
+}
+
+
+        /* CSS for styling the page */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #2a6d77;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .translate {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ff0000;
+            border-radius: 50%; /* Make the tab circular */
+            cursor: pointer;
+            transition: background 0.3s;
+            text-align: center;
+            font-size: 12px;
+            color: rgb(255, 0, 0);
+        }
+
+        .tab.active {
+            background-color: #2a6d77;
+            color: #fff;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .menu-item {
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .menu-item h3 {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .menu-item p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .price-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .price-button {
+            flex: 1;
+            padding: 5px;
+            background-color: #2a6d77;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 0 2px;
+        }
+
+        .price-disbutton {
+            flex: 1;
+            padding: 5px;
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 0 2px;
+        }
+
+            /* CSS for like/dislike buttons */
+            .like-dislike-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .like-button, .dislike-button {
+            background-color: #ddd;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .like-button.active {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+
+        .dislike-button.active {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+
+ <br><br>
+<!--page1-->
+<center>
+ <div class="page1_class1" id="page1_id1" style="background:none;border:2px solid gray;border-radius: 20px;width: 250px;padding-top: 10px;padding-bottom: 20px;padding-left: 20px;padding-right: 20px;"> 
+    <h1>Login Form</h1>
+    <br>
+    <input type="text" id="username" placeholder="Username" style="border-top: none;border-right: none;border-left: none;outline: none; text-align: center;font-size:0.9em ;width: 50%;font-weight:bold;"/><br>
+    <br>
+    <input type="password" id="password" placeholder="Password" style="border-top: none;border-right: none;border-left: none;outline: none; text-align: center;font-size:0.9em ;width: 50%;font-weight:bold;"/>
+    <br><span id="errorMessage" style="color: red" ></span><br>
+    <input type="submit" value="Login" onclick="LoginUser()"  style="float: right;padding-top: 1px;padding-bottom: 1px;padding-left: 10px;padding-right: 10px;font-size: 0.9em;font-weight:bold;" /><br>
+    <br>
+    <b>If you don't have an account,</b><input type="button" onClick="function1()" value="Create New" style="margin-top: 5px;font-weight:bold;" />
+ </div>
+
+<!--page2-->
+<div class="page2_class1" id="page2_id1" style="background:none;border:2px solid gray;border-radius: 20px;width: 250px;padding-top: 10px;padding-bottom: 20px;padding-left: 20px;padding-right: 20px;">
+ <h1>Create Account</h1>
+    <input type="text" id="usernamee" placeholder="Name" style="border-top: none;border-right: none;border-left: none;outline: none; text-align: center;font-size:0.9em ;width: 50%;font-weight:bold;"/><br>
+    <br>
+    <input type="password" id="passwordd" placeholder="Create password" style="border-top: none;border-right: none;border-left: none;outline: none; text-align: center;font-size: 0.9;width: 50%;font-weight:bold;" /><br>
+        <br>
+    <input type="text" id="email" placeholder="Email" style="border-top: none;border-right: none;border-left: none;outline: none; text-align: center;font-size:0.9em ;width: 50%;font-weight:bold;"/><br>
+    <br>
+    <input type="number" id="phone" placeholder="Phone no." style="border-top: none;border-right: none;border-left: none;outline: none; text-align: center;font-size:0.9em ;width: 50%;font-weight:bold;" /><br><br>
+    <b style="color:red;">Password must contain letters and numbers. It will not work without letters and numbers.</b><br><br>
+    <input type="submit" value="Create" onclick="AddRow()" style="float: right;padding-top: 1px;padding-bottom: 1px;padding-left: 10px;padding-right: 10px;font-size: 0.9em;font-weight:bold;" />
+    <br>
+</div>
+
+<!--page3-->
+ <div class="page3_class1" id="page3_id1" style="background:none;border:2px solid gray;border-radius: 20px;width: 250px;padding-top: 10px;padding-bottom: 20px;padding-left: 20px;padding-right: 20px;"><center>
+    <h2> Your account has been successfully created. Login to your account</h2>
+    <input type="submit"  onClick="function3()" value="Login" style="font-weight:bold;"><br>
+ </div> 
+
+<!--page4-->
+<div class="page4_class1" id="page4_id1" >
+         <h1> Hi <b id="displayusername" style="color:red;"></b>! </h1>
+
+         <!-- SELECT PLAYER BOX -->
+    <div class="select-box">
+        <header>Tic Tac Toe</header>
+        <div class="content">
+            <div class="title">Select which icon you want to be?</div>
+            <div class="options">
+                <button class="playerX">Player X</button>
+                <button class="playerO">Player O</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LAYOUT/BOARD -->
+    <div class="play-board">
+        <div class="details">
+            <div class="players">
+                <span class="Xturn">X's Turn</span>
+                <span class="Oturn">O's Turn</span>
+                <div class="slider"></div>
+            </div>
+        </div>
+        <!-- play area -->
+        <div class="play-area">
+            <section>
+                <span class="box1"></span>
+                <span class="box2"></span>
+                <span class="box3"></span>
+            </section>
+            <section>
+                <span class="box4"></span>
+                <span class="box5"></span>
+                <span class="box6"></span>
+            </section>
+            <section>
+                <span class="box7"></span>
+                <span class="box8"></span>
+                <span class="box9"></span>
+            </section>
+        </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="result-box">
+        <div class="won-text"></div>
+        <div class="btn">
+            <button style="margin:5px" onclick="window.location.reload();">Replay</button>
+            <button style="margin:5px" onclick="functionSave()">SaveData</button>
+        </div>
+    </div>
+
+
+     </div> 
+
+
+<!--page5-->
+ <div class="page5_class1" id="page5_id1" style="background:none;border:2px solid gray;border-radius: 20px;width: 200px;padding-top: 10px;padding-bottom: 20px;padding-left: 20px;padding-right: 20px;"><center>
+
+<div class="contaner">
+   <form method="post" action="https://script.google.com/macros/s/AKfycbwFxpX2CBXzVKcT9Ajs8O3Ar3mbDdu2zfXGg1w-26YOpwc_pVj4saJZNxO5mzt70KQD/exec" name="contact-form">
+    <h4>Contact Us</h4>
+    <input type="number" name="ID" placeholder="Round" disabled>
+    <input type="text" name="Player" placeholder="Player" disabled>
+    <input type="text" name="Result" placeholder="Result" disabled>
+    <input type="submit" value="Submit" id="submit2" >
+ </form>
+</div>
+
+ <a href="https://docs.google.com/spreadsheets/d/1pi8PgRaXhgjPWlTRqxI0zquxvuiBKo8u6ueNfJk5X5w/edit?usp=sharing" class="s-link" target="_blank" rel="noopener">click here to see results in google sheet</a>
+
+
+ </div> 
+
+
+<script>
+
+</script>
+
+   
+ <script>
+         function AddRow()
+    {
+      var usernamee = document.getElementById("usernamee").value;
+      var passwordd = document.getElementById("passwordd").value;
+      var email = document.getElementById("email").value;
+      var phone = document.getElementById("phone").value;
+      const regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+      
+      if (usernamee==""|| passwordd==""|| email==""|| phone=="" || phone.length != 10 || phone[0] != 0 ) {
+        alert("Invalid phone number. Please try again. Check input 10 number and first number equal to 0");
+        return false;
+      }
+      else if(regex.test(phone)) { 
+        alert("Phone number is valid.");
+      google.script.run.AddRecord(usernamee,passwordd,email,phone);
+      document.getElementById("page2_id1").className = "page2_id1-off";
+      document.getElementById("page3_id1").className = "page3_id1";
+     }
+    }
+
+     function LoginUser()
+    {
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    google.script.run.withSuccessHandler(function(output) 
+    {
+      if(output == 'TRUE')
+      {
+         document.getElementById("displayusername").innerHTML = username;
+         document.getElementById("page1_id1").className = "page1_class1-off";
+         document.getElementById("page4_id1").className = "page4_id1"; 
+
+         function functionSave(){ 
+         document.getElementById("displayusername").innerHTML = username;
+         document.getElementById("page5_id1").className = "page5_id1-off"
+         document.getElementById("page5_id1").className = "page5_id1"; 
+         ID += 1;
+         Player = username;
+         Result = wonText;
+         google.script.run.AddRecord2(ID,Player,Result);
+
+         const scriptURL = 'https://script.google.com/macros/s/AKfycbwFxpX2CBXzVKcT9Ajs8O3Ar3mbDdu2zfXGg1w-26YOpwc_pVj4saJZNxO5mzt70KQD/exec'
+
+         const form = document.forms['contact-form']
+
+          form.addEventListener('submit2', e => {
+        e.preventDefault()
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => alert("Thank you! your saved data successfully." ))
+        .then(() => { window.location.reload(); })
+        .catch(error => console.error('Error!', error.message))
+      })
+
+        }   
+      }
+      else if(output == 'FALSE')
+      {
+        document.getElementById("errorMessage").innerHTML = "Invalid data";     
+      }    
+    }).checkLogin(username, password);
+    }
+    
+function function1(){
+    document.getElementById("page1_id1").className = "page1_class1-off";
+    document.getElementById("page2_id1").className = "page2_id1";
+}
+ 
+function function3(){ 
+  document.getElementById("page3_id1").className = "page3_id1-off";
+  document.getElementById("page1_id1").className = "page1_id1"; 
+}
+
+</script>
+
+
+  <!-- Player -->
+    <script>
+
+// specify variable based on CSS classes
+const selectBox = document.querySelector(".select-box"),
+selectBtnX = selectBox.querySelector(".options .playerX"),
+selectBtnO = selectBox.querySelector(".options .playerO"),
+playBoard = document.querySelector(".play-board"),
+players = document.querySelector(".players"),
+allBox = document.querySelectorAll("section span"),
+
+resultBox = document.querySelector(".result-box"),
+wonText = resultBox.querySelector(".won-text"),
+replayBtn = resultBox.querySelector("button");
+
+window.onload = ()=>{
+    // make sure all the boxes in the board are clickable
+    for (let i = 0; i < allBox.length; i++) {
+       allBox[i].setAttribute("onclick", "clickedBox(this)");
+    }
+}
+
+selectBtnX.onclick = ()=>{
+    selectBox.classList.add("hide");
+    playBoard.classList.add("show");
+}
+
+selectBtnO.onclick = ()=>{ 
+    selectBox.classList.add("hide");
+    playBoard.classList.add("show");
+    players.setAttribute("class", "players active player");
+}
+
+let playerXIcon = "fas fa-times", playerOIcon = "far fa-circle", playerSign = "X", runBot = true;
+
+// user interaction with the board
+function clickedBox(element){
+    // console.log("Clicked")
+    if(players.classList.contains("player")){
+        playerSign = "O";
+        element.innerHTML = `<i class="${playerOIcon}"></i>`;
+        players.classList.remove("active");
+        element.setAttribute("id", playerSign);
+    }
+    else{
+        element.innerHTML = `<i class="${playerXIcon}"></i>`;
+        element.setAttribute("id", playerSign);
+        players.classList.add("active");
+    }
+    selectWinner();
+    element.style.pointerEvents = "none";
+    playBoard.style.pointerEvents = "none";
+
+    // buffer time to pretend that the AI's thinking
+    let randomTimeDelay = ((Math.random() * 1000) + 200).toFixed();
+    setTimeout(()=>{
+        bot(runBot);
+    }, randomTimeDelay);
+    console.log(playBoard);
+
+}
+  
+// computer interaction with the board
+function bot(){
+    let array = [];
+    if(runBot){
+        playerSign = "O";
+        // find the remaining boxes that has not been marked
+        for (let i = 0; i < allBox.length; i++) {
+            if(allBox[i].childElementCount == 0){
+                array.push(i);
+            }
+        }
+        // get random box from remaining tiles
+        let randomBox = array[Math.floor(Math.random() * array.length)];
+        if(array.length > 0){
+            if(players.classList.contains("player")){ 
+                playerSign = "X";
+                allBox[randomBox].innerHTML = `<i class="${playerXIcon}"></i>`;
+                allBox[randomBox].setAttribute("id", playerSign);
+                players.classList.add("active"); 
+            }
+            else{
+                allBox[randomBox].innerHTML = `<i class="${playerOIcon}"></i>`;
+                players.classList.remove("active");
+                allBox[randomBox].setAttribute("id", playerSign);
+            }
+            selectWinner();
+        }
+        allBox[randomBox].style.pointerEvents = "none";
+        playBoard.style.pointerEvents = "auto";
+        playerSign = "X";        
+    }
+}
+// get the sign of a certain box
+function getIdVal(classname){
+    return document.querySelector(".box" + classname).id;
+}
+// check 3 tiles to see if they are the same
+function checkIdSign(val1, val2, val3, sign){ 
+    if(getIdVal(val1) == sign && getIdVal(val2) == sign && getIdVal(val3) == sign){
+        return true;
+    }
+    return false;
+}
+// check winner
+function selectWinner(){
+    if(checkIdSign(1,2,3,playerSign) || checkIdSign(4,5,6, playerSign) || checkIdSign(7,8,9, playerSign) || checkIdSign(1,4,7, playerSign) || checkIdSign(2,5,8, playerSign) || checkIdSign(3,6,9, playerSign) || checkIdSign(1,5,9, playerSign) || checkIdSign(3,5,7, playerSign)){
+        runBot = false;
+        bot(runBot);
+
+        // buffer time
+        setTimeout(()=>{
+            resultBox.classList.add("show");
+            playBoard.classList.remove("show");
+        }, 700);
+        wonText.innerHTML = `Player ${playerSign}<br> won the game!`;
+    }
+    else{
+        // if the board is full
+        if(getIdVal(1) != "" && getIdVal(2) != "" && getIdVal(3) != "" && getIdVal(4) != "" && getIdVal(5) != "" && getIdVal(6) != "" && getIdVal(7) != "" && getIdVal(8) != "" && getIdVal(9) != ""){
+            runBot = false;
+            bot(runBot);
+            
+            // buffer time for showing the match has been drawn
+            setTimeout(()=>{
+                resultBox.classList.add("show");
+                playBoard.classList.remove("show");
+            }, 700);
+            wonText.textContent = "Match has been drawn!";
+        }
+    }
+}
+
+// reload page when replay button is clicked
+replayBtn.onclick = () => {
+    window.location.reload();
+}
+
+    </script>
+
+    <!-- Ai -->
+<script>
+// specify variable based on CSS classes
+const selectBox = document.querySelector(".select-box"),
+selectBtnX = selectBox.querySelector(".options .playerX"),
+selectBtnO = selectBox.querySelector(".options .playerO"),
+playBoard = document.querySelector(".play-board"),
+players = document.querySelector(".players"),
+allBox = document.querySelectorAll("section span"),
+
+resultBox = document.querySelector(".result-box"),
+wonText = resultBox.querySelector(".won-text"),
+replayBtn = resultBox.querySelector("button");
+
+window.onload = ()=>{
+    // make sure all the boxes in the board are clickable
+    for (let i = 0; i < allBox.length; i++) {
+       allBox[i].setAttribute("onclick", "clickedBox(this)");
+    }
+}
+
+selectBtnX.onclick = ()=>{
+    selectBox.classList.add("hide");
+    playBoard.classList.add("show");
+}
+
+selectBtnO.onclick = ()=>{ 
+    selectBox.classList.add("hide");
+    playBoard.classList.add("show");
+    players.setAttribute("class", "players active player");
+}
+
+let playerXIcon = "fas fa-times", playerOIcon = "far fa-circle", playerSign = "X", runBot = true;
+
+// user interaction with the board
+function clickedBox(element){
+    // console.log("Clicked")
+    if(players.classList.contains("player")){
+        playerSign = "O";
+        element.innerHTML = `<i class="${playerOIcon}"></i>`;
+        players.classList.remove("active");
+        element.setAttribute("id", playerSign);
+    }
+    else{
+        element.innerHTML = `<i class="${playerXIcon}"></i>`;
+        element.setAttribute("id", playerSign);
+        players.classList.add("active");
+    }
+    selectWinner();
+    element.style.pointerEvents = "none";
+    playBoard.style.pointerEvents = "none";
+
+    // buffer time to pretend that the AI's thinking
+    let randomTimeDelay = ((Math.random() * 1000) + 200).toFixed();
+    setTimeout(()=>{
+        bot(runBot);
+    }, randomTimeDelay);
+    console.log(playBoard);
+
+}
+
+// computer interaction with the board
+function bot(){
+    let array = [];
+    if(runBot){
+        playerSign = "O";
+
+
+
+        if(array.length > 0){
+            if(players.classList.contains("player")){ 
+                playerSign = "X";
+                allBox[randomBox].innerHTML = `<i class="${playerXIcon}"></i>`;
+                allBox[randomBox].setAttribute("id", playerSign);
+                players.classList.add("active"); 
+            }
+            else{
+                allBox[randomBox].innerHTML = `<i class="${playerOIcon}"></i>`;
+                players.classList.remove("active");
+                allBox[randomBox].setAttribute("id", playerSign);
+            }
+            selectWinner();
+        }
+        allBox[randomBox].style.pointerEvents = "none";
+        playBoard.style.pointerEvents = "auto";
+        playerSign = "X";        
+    }
+}
+// get the sign of a certain box
+function getIdVal(classname){
+    return document.querySelector(".box" + classname).id;
+}
+// check 3 tiles to see if they are the same
+function checkIdSign(val1, val2, val3, sign){ 
+    if(getIdVal(val1) == sign && getIdVal(val2) == sign && getIdVal(val3) == sign){
+        return true;
+    }
+    return false;
+}
+// check winner
+function selectWinner(){
+    if(checkIdSign(1,2,3,playerSign) || checkIdSign(4,5,6, playerSign) || checkIdSign(7,8,9, playerSign) || checkIdSign(1,4,7, playerSign) || checkIdSign(2,5,8, playerSign) || checkIdSign(3,6,9, playerSign) || checkIdSign(1,5,9, playerSign) || checkIdSign(3,5,7, playerSign)){
+        runBot = false;
+        bot(runBot);
+
+        // buffer time
+        setTimeout(()=>{
+            resultBox.classList.add("show");
+            playBoard.classList.remove("show");
+        }, 700);
+        wonText.innerHTML = `Player ${playerSign}<br> won the game!`;
+    }
+    else{
+        // if the board is full
+        if(getIdVal(1) != "" && getIdVal(2) != "" && getIdVal(3) != "" && getIdVal(4) != "" && getIdVal(5) != "" && getIdVal(6) != "" && getIdVal(7) != "" && getIdVal(8) != "" && getIdVal(9) != ""){
+            runBot = false;
+            bot(runBot);
+            
+            // buffer time for showing the match has been drawn
+            setTimeout(()=>{
+                resultBox.classList.add("show");
+                playBoard.classList.remove("show");
+            }, 700);
+            wonText.textContent = "Match has been drawn!";
+        }
+    }
+}
+
+// reload page when replay button is clicked
+replayBtn.onclick = () => {
+    window.location.reload();
+}
+
+</script>
+
+
+</body>
+</html>
